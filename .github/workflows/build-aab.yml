@@ -1,0 +1,72 @@
+name: Build AAB (Android App Bundle)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "app/**"
+      - ".github/workflows/build-aab.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "app/**"
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build Release AAB
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.44.2"
+          channel: "stable"
+          cache: true
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Decode Keystore
+        run: |
+          mkdir -p ~/.keystores
+          if [ -n "${{ secrets.KEYSTORE_BASE64 }}" ]; then
+            echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > ~/.keystores/upload-keystore.jks
+          fi
+
+      - name: Create key.properties
+        run: |
+          if [ -n "${{ secrets.KEYSTORE_PASSWORD }}" ]; then
+            cat > app/docscan_app/android/key.properties <<'PROPEOF'
+          storePassword=$STORE_PASS
+          keyPassword=$KEY_PASS
+          keyAlias=$KEY_ALIAS
+          storeFile=/home/runner/.keystores/upload-keystore.jks
+          PROPEOF
+            sed -i "s|\$STORE_PASS|${{ secrets.KEYSTORE_PASSWORD }}|g" app/docscan_app/android/key.properties
+            sed -i "s|\$KEY_PASS|${{ secrets.KEYSTORE_PASSWORD }}|g" app/docscan_app/android/key.properties
+            sed -i "s|\$KEY_ALIAS|${{ secrets.KEYSTORE_ALIAS || 'upload' }}|g" app/docscan_app/android/key.properties
+          fi
+
+      - name: Get Flutter packages
+        run: flutter pub get
+        working-directory: app/docscan_app
+
+      - name: Analyze Dart code
+        run: flutter analyze
+        working-directory: app/docscan_app
+
+      - name: Build AAB (Release)
+        run: flutter build appbundle --release
+        working-directory: app/docscan_app
+
+      - name: Upload AAB artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-release-aab
+          path: app/docscan_app/build/app/outputs/bundle/release/app-release.aab
+          retention-days: 90
