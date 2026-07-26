@@ -1,0 +1,26 @@
+{
+  "app": "DocScan",
+  "version": "1.0.0",
+  "versionCode": 1,
+  "pricing": "Free",
+  "iap": {
+    "product": "premium",
+    "type": "non_consumable",
+    "price_eur": 4.99,
+    "price_ar_currency": "د.م. 4,99",
+    "title": "DocScan Premium",
+    "description": "Einmaliger Kauf. Lebenslange Updates."
+  },
+  "languages": ["de", "en", "ar"],
+  "category": "PRODUCTIVITY",
+  "tags": ["document scanner", "OCR", "text recognition", "PDF export", "Arabic OCR"],
+  "listings": {
+    "default": "de-DE",
+    "translations": ["en-US", "ar-SA"]
+  },
+  "data_safety": {
+    "collects_data": false,
+    "encrypted_transit": "N/A",
+    "data_deletion": "N/A"
+  }
+}
