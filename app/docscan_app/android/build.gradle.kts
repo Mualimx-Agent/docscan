@@ -2,6 +2,7 @@ allprojects {
     repositories {
         google()
         mavenCentral()
+        jcenter() // Required by tesseract_ocr 0.5.0
     }
 }
 
