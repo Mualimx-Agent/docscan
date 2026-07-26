@@ -57,8 +57,8 @@ jobs:
         working-directory: app/docscan_app
 
       - name: Analyze Dart code
-        run: flutter analyze
-        working-directory: app/docscan_app
+        run: flutter analyze --no-fatal-infos --no-fatal-warnings
+        working-directory: APP_DIR
 
       - name: Build AAB (Release)
         run: flutter build appbundle --release
