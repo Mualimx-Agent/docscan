@@ -2,7 +2,7 @@ allprojects {
     repositories {
         google()
         mavenCentral()
-        maven { url = uri("https://jitpack.io") } // Required by tesseract_ocr deps
+        maven { url = uri("https://jcenter.bintray.com") }
     }
 }
 
