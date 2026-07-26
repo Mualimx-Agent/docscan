@@ -2,7 +2,7 @@ allprojects {
     repositories {
         google()
         mavenCentral()
-        jcenter() // Required by tesseract_ocr 0.5.0
+        maven { url = uri("https://jitpack.io") } // Required by tesseract_ocr deps
     }
 }
 
