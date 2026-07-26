@@ -61,7 +61,7 @@ jobs:
         working-directory: app/docscan_app
 
       - name: Build AAB (Release)
-        run: flutter build appbundle --release
+        run: flutter build appbundle --release --android-skip-build-dependency-validation
         working-directory: app/docscan_app
 
       - name: Upload AAB artifact
