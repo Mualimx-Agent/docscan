@@ -25,14 +25,8 @@ subprojects {
             jvmTarget = "17"
         }
     }
-    // Also force Java compile target to 17 for all plugins
-    afterEvaluate {
-        extensions.findByType<com.android.build.gradle.BaseExtension>()?.apply {
-            compileOptions {
-                sourceCompatibility = JavaVersion.VERSION_17
-                targetCompatibility = JavaVersion.VERSION_17
-            }
-        }
+    tasks.withType<org.gradle.api.tasks.compile.JavaCompile>().configureEach {
+        options.release.set(17)
     }
 }
 
