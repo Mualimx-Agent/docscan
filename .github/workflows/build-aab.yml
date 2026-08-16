@@ -60,8 +60,28 @@ jobs:
         run: flutter analyze --no-fatal-infos --no-fatal-warnings
         working-directory: app/docscan_app
 
+      - name: Patch targetSdk in Flutter Gradle plugin
+        run: |
+          echo "" >> app/docscan_app/android/local.properties
+          cat >> app/docscan_app/android/local.properties << 'EOF'
+          flutter.targetSdkVersion=34
+          flutter.compileSdkVersion=36
+          flutter.minSdkVersion=23
+          EOF
+
       - name: Build AAB (Release)
-        run: flutter build appbundle --release --android-skip-build-dependency-validation
+        run: |
+          echo "=== build.gradle.kts ==="
+          cat android/app/build.gradle.kts
+          echo "=== local.properties ==="
+          cat android/local.properties
+          echo "=== pubspec.yaml version ==="
+          grep "^version:" pubspec.yaml
+          flutter build appbundle --release \
+            --android-skip-build-dependency-validation \
+            --build-name=1.0.0 --build-number=1
+          echo "=== AAB built ==="
+          ls -la build/app/outputs/bundle/release/
         working-directory: app/docscan_app
 
       - name: Upload AAB artifact
