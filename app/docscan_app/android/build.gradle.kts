@@ -25,9 +25,6 @@ subprojects {
             jvmTarget = "17"
         }
     }
-    tasks.withType<org.gradle.api.tasks.compile.JavaCompile>().configureEach {
-        options.release.set(17)
-    }
 }
 
 tasks.register<Delete>("clean") {
