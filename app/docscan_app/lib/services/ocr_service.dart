@@ -1,6 +1,5 @@
 import 'dart:io';
-import 'package:tesseract_ocr/tesseract_ocr.dart';
-import 'package:tesseract_ocr/ocr_engine_config.dart';
+import 'package:flutter_tesseract_ocr/flutter_tesseract_ocr.dart';
 
 class OcrService {
   /// Extract Arabic text from an image using Tesseract OCR.
@@ -12,12 +11,10 @@ class OcrService {
         return OcrResult(text: '', confidence: 0.0, error: 'Image file not found');
       }
 
-      final text = await TesseractOcr.extractText(
+      final text = await FlutterTesseractOcr.extractText(
         imagePath,
-        config: OCRConfig(
-          language: 'ara',
-          options: {TesseractConfig.pageSegMode: '3'},
-        ),
+        language: 'ara',
+        args: {'psm': '3', 'oem': '1'},
       );
 
       if (text.isEmpty) {
