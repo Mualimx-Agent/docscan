@@ -16,6 +16,8 @@ jobs:
   build:
     name: Build Release AAB
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
 
     steps:
       - name: Checkout repository
@@ -85,9 +87,23 @@ jobs:
         working-directory: app/docscan_app
 
       - name: Upload AAB artifact
+        continue-on-error: true
         uses: actions/upload-artifact@v4
         with:
           name: app-release-aab
           path: app/docscan_app/build/app/outputs/bundle/release/app-release.aab
           if-no-files-found: error
           retention-days: 7
+
+      # Release-Assets zaehlen nicht gegen das Actions-Speicherkontingent.
+      # Deshalb liegt hier die verlaessliche Kopie des AAB.
+      - name: AAB als Release veroeffentlichen
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tag="build-${{ github.run_number }}"
+          gh release create "$tag" \
+            "app/docscan_app/build/app/outputs/bundle/release/app-release.aab#docscan-build${{ github.run_number }}.aab" \
+            --title "Docscan Build ${{ github.run_number }}" \
+            --notes "Automatischer Build aus ${{ github.sha }}" \
+            --latest
