@@ -89,4 +89,5 @@ jobs:
         with:
           name: app-release-aab
           path: app/docscan_app/build/app/outputs/bundle/release/app-release.aab
-          retention-days: 90
+          if-no-files-found: error
+          retention-days: 7
