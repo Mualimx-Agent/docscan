@@ -1,4 +1,4 @@
-package com.mualimx.docscan_app
+package com.mualimx.docscan
 
 import io.flutter.embedding.android.FlutterActivity
 

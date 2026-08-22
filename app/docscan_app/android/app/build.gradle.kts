@@ -19,7 +19,7 @@ val keystoreProperties = Properties().apply {
 }
 
 android {
-    namespace = "com.mualimx.docscan_app"
+    namespace = "com.mualimx.docscan"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
@@ -29,7 +29,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.mualimx.docscan_app"
+        applicationId = "com.mualimx.docscan"
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
