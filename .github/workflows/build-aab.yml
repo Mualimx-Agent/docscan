@@ -81,7 +81,7 @@ jobs:
           grep "^version:" pubspec.yaml
           flutter build appbundle --release \
             --android-skip-build-dependency-validation \
-            --build-name=1.0.0 --build-number=1
+            --build-name=1.0.0 --build-number=${{ github.run_number }}
           echo "=== AAB built ==="
           ls -la build/app/outputs/bundle/release/
         working-directory: app/docscan_app
